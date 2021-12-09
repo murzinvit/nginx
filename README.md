@@ -61,7 +61,7 @@ spec:
       protocol: TCP
     volumeMounts:
     - name: nginx-stor
-      mountPath: /mnt
+      mountPath: /usr/share/
   volumes:
   - name: nginx-stor
     persistentVolumeClaim:
