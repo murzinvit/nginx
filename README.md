@@ -60,10 +60,10 @@ spec:
       containerPort: 80
       protocol: TCP
     volumeMounts:
-    - name: nginx-storage
+    - name: nginx-stor
       mountPath: /etc/nginx
   volumes:
-  - name: k8s-mysql-storage
+  - name: nginx-stor
     persistentVolumeClaim:
        claimName: nginx-storage
 EOF
