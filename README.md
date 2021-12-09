@@ -7,6 +7,95 @@
 Завершение через nginx c ожидание завершения обслуживания: `nginx -s quit` </br>
 Завершение через ОС c ожидание завершения обслуживания: `kill -s QUIT 1628` </br>
 
+---
+
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: all-nfs-volume
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 10.10.1.226
+    path: /var/nfs
+EOF
+``` 
+```
+kubectl apply -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nginx-storage
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+EOF
+```
+
+
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    name: nginx-pod-lbl
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    imagePullPolicy: IfNotPresent
+    ports:
+    - name: nginx
+      containerPort: 80
+      protocol: TCP
+    volumeMounts:
+    - name: nginx-storage
+      mountPath: /etc/nginx
+  volumes:
+  - name: k8s-mysql-storage
+    persistentVolumeClaim:
+       claimName: nginx-storage
+EOF
+```
+```
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  labels:
+    name: nginx-service-lbl
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: nginx-pod-lbl
+  type: NodePort
+EOF
+```
+
+
+
+
+
+
+
+
+
+
+
 
 ---
 work notes: </br>
