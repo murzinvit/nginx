@@ -110,3 +110,5 @@ https://serveradmin.ru/ci-cd-proekta-na-wordpress/ </br>
 https://habr.com/ru/post/174467/ </br>
 https://habr.com/ru/company/domclick/blog/577964/ </br>
 https://abc-server.com/ru/blog/administration/nginx/ </br>
+https://nginx.org/ru/docs/beginners_guide.html </br>
+
