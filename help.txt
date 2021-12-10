@@ -599,3 +599,67 @@ spec:
           claimName: zookeeper-vol- containerPort: 9000
 EOF
 ----------------------------------------
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    name: nginx-pod-lbl
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    imagePullPolicy: IfNotPresent
+    ports:
+    - name: nginx
+      containerPort: 80
+      protocol: TCP
+    volumeMounts:
+    - name: nginx-store
+      mountPath: /etc/nginx
+    volumeMounts:
+    - name: html-store
+      mountPath: /usr/share/nginx/html
+  volumes:
+  - name: nginx-store
+    persistentVolumeClaim:
+       claimName: nginx-store
+  volumes:
+  - name: html-store
+    persistentVolumeClaim:
+       claimName: html-store
+EOF
+----------------------------------------
+
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-html-volume
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 10.10.1.226
+    path: /var/html_vol
+EOF
+-----------------------------------------
+kubectl apply -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: html-store
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: nginx-html-volume
+EOF
+----------------------------------------
+
