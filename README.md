@@ -113,3 +113,7 @@ https://abc-server.com/ru/blog/administration/nginx/ </br>
 https://nginx.org/ru/docs/beginners_guide.html </br>
 https://netpoint-dc.com/blog/redis-cluster-linux/ </br>
 
+---
+https://github.com/netology-code/devkub-homeworks </br>
+
+
