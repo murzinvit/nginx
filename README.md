@@ -60,10 +60,10 @@ spec:
       containerPort: 80
       protocol: TCP
     volumeMounts:
-    - name: nginx-stor
+    - name: nginx-store
       mountPath: /usr/share/
   volumes:
-  - name: nginx-stor
+  - name: nginx-store
     persistentVolumeClaim:
        claimName: nginx-storage
 EOF
