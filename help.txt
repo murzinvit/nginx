@@ -1,3 +1,11 @@
+0 - никаких прав;
+1 - только выполнение;
+2 - только запись;
+3 - выполнение и запись;
+4 -  только чтение;
+5 - чтение и выполнение;
+6 - чтение и запись;
+7 - чтение запись и выполнение.
 https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/
 kubectl expose pod prometheus -n stage --type=NodePort --name=prometheus-service
 kubectl expose pod grafana -n stage --type=NodePort --name=grafana-service
