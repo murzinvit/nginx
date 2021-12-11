@@ -1,0 +1,146 @@
+kubectl expose svc frontend-svc-lbl --type=NodePort --name=front-svc-test
+
+
+---
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-conf
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 10.10.1.111
+    path: /var/nginx-conf
+EOF
+---
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nginx-data
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: 10.10.1.111
+    path: /var/nginx-data
+EOF
+---
+kubectl apply -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nginx-data-storage
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: nginx-data
+EOF
+---
+kubectl apply -f - <<EOF
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: nginx-conf-storage
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: nginx-conf
+EOF
+---
+kubectl apply -f - <<EOF
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    app: fronend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fronend
+  template:
+    metadata:
+      labels:
+        app: fronend
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: nginx-data-storage
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nginx-data-storage
+        persistentVolumeClaim:
+           claimName: nginx-data-storage
+
+EOF
+-------------------------
+        volumeMounts:
+        - name: nginx-conf-storage
+          mountPath: /etc/nginx
+        volumeMounts:
+        - name: nginx-data-storage
+          mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nginx-conf-storage
+        persistentVolumeClaim:
+           claimName: nginx-conf-storage
+      volumes:
+      - name: nginx-data-storage
+        persistentVolumeClaim:
+           claimName: nginx-data-storage
+-------------------------
+kubectl apply -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+  labels:
+    name: frontend-svc-lbl
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: fronend
+  type: ClusterIP
+EOF
+kubectl expose svc frontend-svc --type=NodePort --name=front-svc-test
+---
+kubectl apply -f - <<EOF
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-frontend
+spec:
+  rules:
+  - host: devops6.ru
+    http:
+      paths:
+       - path: /
+         pathType: Prefix
+         backend:
+           service: 
+              name: frontend-svc
+              port:
+                number: 80
+EOF
+---
