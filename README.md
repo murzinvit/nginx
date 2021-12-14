@@ -7,6 +7,7 @@
 Завершение через nginx c ожидание завершения обслуживания: `nginx -s quit` </br>
 Завершение через ОС c ожидание завершения обслуживания: `kill -s QUIT 1628` </br>
 https://linux-notes.org/komanda-kill-v-unix-linux/
+https://laurvas.ru/bash-trap/
 
 ---
 
