@@ -32,7 +32,6 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mysql-pass
-  namespace: stage
 type: Opaque
 data:
   password: YWRtaW4=
@@ -45,7 +44,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: stage
   labels:
     app: fronend
 spec:
@@ -72,7 +70,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: k8s-mysql
-  namespace: stage
   labels:
     name: lbl-k8s-mysql
 spec:
@@ -102,7 +99,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: k8s-nginx
-  namespace: stage
   labels:
     name: lbl-k8s-nginx
 spec:
@@ -137,7 +133,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: nginx-service
-  namespace: stage
   labels:
     name: nginx-service
 spec:
@@ -173,8 +168,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-hosts
-  namespace: stage
-
 spec:
   rules:
   - host: wd4.ru
@@ -196,7 +189,6 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mysql-nfs-share
-  namespace: stage
 spec:
   capacity:
     storage: 1Gi
@@ -215,7 +207,6 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: fileshare
-  namespace: stage
 spec:
   accessModes:
   - ReadWriteMany
@@ -230,7 +221,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: k8s-mysql
-  namespace: stage
   labels:
     name: lbl-k8s-mysql
 spec:
@@ -263,7 +253,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: prometheus
-  namespace: stage
   labels:
     name: lbl-prometheus
 spec:
@@ -288,7 +277,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: grafana
-  namespace: monit
   labels:
     name: lbl-grafana
 spec:
@@ -309,7 +297,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: frontend
-  namespace: stage
   labels:
     name: frontend
 spec:
@@ -326,7 +313,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: db
-  namespace: stage
   labels:
     name: db
 spec:
@@ -343,7 +329,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: backend
-  namespace: stage
   labels:
     name: backend
 spec:
@@ -364,7 +349,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: frontend
-  namespace: stage
   labels:
     name: frontend
 spec:
@@ -381,7 +365,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: db
-  namespace: stage
   labels:
     name: db
 spec:
@@ -398,7 +381,6 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: backend
-  namespace: stage
   labels:
     name: backend
 spec:
@@ -419,7 +401,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend
-  namespace: stage
   labels:
     name: frontend
 spec:
