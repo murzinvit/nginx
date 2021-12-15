@@ -9,6 +9,7 @@
 https://linux-notes.org/komanda-kill-v-unix-linux/ </br>
 https://laurvas.ru/bash-trap/ </br>
 https://github.com/yodo-im/devops_lesson_trial
+https://yodo.im/start?utm_source=youtube&utm_medium=antonpavlenko&utm_campaign=20210216
 
 ---
 
